@@ -1,0 +1,11 @@
+fix sound q_files quality
+regenrate sound files using audacity
+
+
+play_begining_of_aya should play 30%
+play_begining_of_aya should fade after 30%
+
+play_end_of_aya should play last 30%
+play_end_of_aya should start and rampup 
+
+

@@ -12,11 +12,68 @@ class QuranApp:
         self.audio_player = None
         self.speed = None  # Will be loaded from DB in init_db()
         self.aya_duration = None
+        self.play_begining_of_aya_is_true = False
+        self.audio_volume = 1.0
         
+    def audio_fade(self, total_period, current_position, current_volume):
+        """Calculate new volume for audio fade
+        Args:
+            total_period: Total duration of fade period
+            current_position: Current position in fade period
+            current_volume: Current volume level
+        Returns:
+            float: New volume level
+        """
+        # Exponential fade out for more noticeable volume reduction
+        fade_progress = current_position / total_period
+        # Use exponential curve for sharper volume reduction
+        fade_factor = (1 - fade_progress) ** 2
+        new_volume = max(0.0, min(1.0, current_volume * fade_factor))
+        print(f"[DEBUG] Fade calculation: progress={fade_progress:.3f}, factor={fade_factor:.3f}, current={current_volume:.3f}, new={new_volume:.3f}")
+        return new_volume
+
     def audio_position_changed(self, e):
         """Handle audio position changes"""
-        print(f"Current position: {e.data}")
+        if not hasattr(self, 'last_volume_update'):
+            self.last_volume_update = 0
+            
+        if self.aya_duration and self.play_begining_of_aya_is_true:
+            current_position = float(e.data)
+            thirty_percent = self.aya_duration * 0.3
+            sixty_percent = self.aya_duration * 0.6
+            
+            print(f"[DEBUG] Position: {current_position:.2f}/{self.aya_duration:.2f} (30%={thirty_percent:.2f}, 60%={sixty_percent:.2f})")
+            
+            if current_position > sixty_percent:
+                self.audio_player.pause()
+                self.play_begining_of_aya_is_true = False
+                print("[DEBUG] Stopped at 60% and reset flag to False")
+            elif current_position > thirty_percent:
+                # Only update volume if enough time has passed (every 100ms)
+                if current_position - self.last_volume_update >= 0.1:
+                    self.last_volume_update = current_position
+                    
+                    # Calculate fade over 30-60% period
+                    fade_position = current_position - thirty_percent
+                    fade_period = sixty_percent - thirty_percent
+                    
+                    print(f"[DEBUG] Current volume before fade: {self.audio_volume:.3f}")
+                    new_volume = self.audio_fade(fade_period, fade_position, self.audio_volume)
+                    
+                    # Try to force volume change by pausing and resuming
+                    self.audio_volume = new_volume
+                    current_position = self.audio_player.get_position()
+                    self.audio_player.pause()
+                    self.audio_player.volume = new_volume
+                    self.audio_player.seek(current_position)
+                    self.audio_player.play()
+                    print(f"[DEBUG] Attempted volume change with pause/resume: {new_volume:.3f}")
 
+    def set_play_beginning_of_aya(self, e):
+        """Handle play beginning of aya button click"""
+        self.play_begining_of_aya_is_true = True
+        print(f"[DEBUG] Play beginning of aya flag set to: {self.play_begining_of_aya_is_true}")
+        
     def create_audio_player(self, src, should_play_on_load=False, playback_rate=None):
         """Create an audio player with the specified source and playback rate"""
         def on_state_changed(e):
@@ -59,6 +116,9 @@ class QuranApp:
         """Play the current aya"""
         print("Playing current aya")
         if self.audio_player:
+            # Reset volume to full before playing
+            self.audio_volume = 1.0
+            self.audio_player.volume = self.audio_volume
             self.audio_player.play()
         
     def init_db(self):

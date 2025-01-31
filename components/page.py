@@ -170,6 +170,12 @@ def create_page(app, page: ft.Page):
                                 icon_size=30,
                                 on_click=lambda e: app.next_item_and_play(),
                             ),
+                            ft.IconButton(
+                                icon=ft.icons.PLAY_CIRCLE_OUTLINE,
+                                icon_size=30,
+                                tooltip="Play beginning of aya",
+                                on_click=lambda e: app.set_play_beginning_of_aya(e),
+                            ),
                         ],
                         alignment=ft.MainAxisAlignment.CENTER,
                     ),
