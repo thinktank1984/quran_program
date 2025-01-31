@@ -1,14 +1,34 @@
 import flet as ft
 import traceback
+from pynput import keyboard
 
 def create_page(app, page: ft.Page):
     """Create and configure the main application page"""
+    
+    # Setup keyboard listener
+    def on_key_press(key):
+        try:
+            if key == keyboard.Key.right:
+                app.next_item_and_play()
+            elif key == keyboard.Key.left:
+                prev_item()
+        except Exception as e:
+            print(f"Error processing key event: {e}")
+    
+    keyboard_listener = keyboard.Listener(on_press=on_key_press)
+    keyboard_listener.start()
     print("\n=== Starting Quran Audio Image App ===")
     page.title = "Quran Audio Image App"
     page.vertical_alignment = "center"
     page.horizontal_alignment = "center"
     page.padding = 20
     page.theme_mode = "light"
+    page.keyboard_shortcuts = False  # Disable default keyboard navigation
+    
+    # Prevent focus changes
+    def on_keyboard_event(e: ft.KeyboardEvent):
+        e.prevent_default = True
+    page.on_keyboard_event = on_keyboard_event
 
     try:
         # Initialize database and load data
