@@ -53,21 +53,12 @@ class QuranApp:
                 if current_position - self.last_volume_update >= 0.1:
                     self.last_volume_update = current_position
                     
-                    # Calculate fade over 30-60% period
-                    fade_position = current_position - thirty_percent
-                    fade_period = sixty_percent - thirty_percent
-                    
+                    # Simple volume reduction every 100ms
                     print(f"[DEBUG] Current volume before fade: {self.audio_volume:.3f}")
-                    new_volume = self.audio_fade(fade_period, fade_position, self.audio_volume)
-                    
-                    # Try to force volume change by pausing and resuming
-                    self.audio_volume = new_volume
-                    current_position = self.audio_player.get_position()
-                    self.audio_player.pause()
-                    self.audio_player.volume = new_volume
-                    self.audio_player.seek(current_position)
-                    self.audio_player.play()
-                    print(f"[DEBUG] Attempted volume change with pause/resume: {new_volume:.3f}")
+                    self.audio_volume = max(0.0, self.audio_volume - 0.1)
+                    self.audio_player.volume = self.audio_volume
+                    self.audio_player.update()
+                    print(f"[DEBUG] Volume decreased to: {self.audio_volume:.3f}")
 
     def set_play_beginning_of_aya(self, e):
         """Handle play beginning of aya button click"""
