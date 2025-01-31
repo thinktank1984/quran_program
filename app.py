@@ -15,23 +15,6 @@ class QuranApp:
         self.play_begining_of_aya_is_true = False
         self.audio_volume = 1.0
         
-    def audio_fade(self, total_period, current_position, current_volume):
-        """Calculate new volume for audio fade
-        Args:
-            total_period: Total duration of fade period
-            current_position: Current position in fade period
-            current_volume: Current volume level
-        Returns:
-            float: New volume level
-        """
-        # Exponential fade out for more noticeable volume reduction
-        fade_progress = current_position / total_period
-        # Use exponential curve for sharper volume reduction
-        fade_factor = (1 - fade_progress) ** 2
-        new_volume = max(0.0, min(1.0, current_volume * fade_factor))
-        print(f"[DEBUG] Fade calculation: progress={fade_progress:.3f}, factor={fade_factor:.3f}, current={current_volume:.3f}, new={new_volume:.3f}")
-        return new_volume
-
     def audio_position_changed(self, e):
         """Handle audio position changes"""
         if not hasattr(self, 'last_volume_update'):
@@ -47,15 +30,24 @@ class QuranApp:
             if current_position > sixty_percent:
                 self.audio_player.pause()
                 self.play_begining_of_aya_is_true = False
-                print("[DEBUG] Stopped at 60% and reset flag to False")
+                self.audio_volume = 1.0
+                self.audio_player.volume = self.audio_volume
+                self.audio_player.update()
+                print("[DEBUG] Stopped at 60%, reset flag to False and volume to 1.0")
             elif current_position > thirty_percent:
                 # Only update volume if enough time has passed (every 100ms)
                 if current_position - self.last_volume_update >= 0.1:
                     self.last_volume_update = current_position
                     
-                    # Simple volume reduction every 100ms
+                    # Calculate fade over 30-60% period
+                    fade_position = current_position - thirty_percent
+                    fade_period = sixty_percent - thirty_percent
+                    
                     print(f"[DEBUG] Current volume before fade: {self.audio_volume:.3f}")
-                    self.audio_volume = max(0.0, self.audio_volume - 0.1)
+                    # Exponential fade calculation
+                    fade_progress = fade_position / fade_period
+                    fade_factor = (1 - fade_progress) ** 2
+                    self.audio_volume = max(0.0, min(1.0, fade_factor))
                     self.audio_player.volume = self.audio_volume
                     self.audio_player.update()
                     print(f"[DEBUG] Volume decreased to: {self.audio_volume:.3f}")
