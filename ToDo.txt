@@ -8,6 +8,7 @@ play_begining_of_aya should play 30%
 
 play_end_of_aya should play last 30%
 play_end_of_aya should start and rampup 
+Sura should be sorted by sura number
 
 Done
 play_begining_of_aya should fade after 30%
