@@ -11,7 +11,12 @@ class QuranApp:
         self.sura_map = {}
         self.audio_player = None
         self.speed = None  # Will be loaded from DB in init_db()
+        self.aya_duration = None
         
+    def audio_position_changed(self, e):
+        """Handle audio position changes"""
+        print(f"Current position: {e.data}")
+
     def create_audio_player(self, src, should_play_on_load=False, playback_rate=None):
         """Create an audio player with the specified source and playback rate"""
         def on_state_changed(e):
@@ -26,6 +31,7 @@ class QuranApp:
         def on_loaded(e):
             """Handle audio loaded event"""
             print("Audio loaded")
+            self.aya_duration = self.audio_player.get_duration()
             if should_play_on_load:
                 self.play_current()
                 
@@ -37,7 +43,7 @@ class QuranApp:
             initial_src=src,
             on_loaded=on_loaded,
             on_duration_changed=lambda _: None,
-            on_position_changed=lambda _: None,
+            on_position_changed=self.audio_position_changed,
             on_state_changed=on_state_changed,
             on_seek_complete=lambda _: None,
             playback_rate=playback_rate
