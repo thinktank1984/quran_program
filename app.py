@@ -1,9 +1,8 @@
-#app.py
+# app.py
 import flet as ft
-import sqlite3
+from db_functions import init_db, get_current_aya, update_current_aya, load_aya_data, get_speed, update_speed
 from components.page import create_page
 from components.audio_player import create_audio_player
-from db_functions import init_db, get_current_aya, update_current_aya, load_aya_data, get_speed, update_speed
 
 class QuranApp:
     def __init__(self):
@@ -17,7 +16,7 @@ class QuranApp:
         self.audio_volume = 1.0
         
     def audio_position_changed(self, e):
-        """Handle audio position changes"""
+        """Handle audio position changes."""
         if not hasattr(self, 'last_volume_update'):
             self.last_volume_update = 0
             
@@ -54,14 +53,14 @@ class QuranApp:
                     print(f"[DEBUG] Volume decreased to: {self.audio_volume:.3f}")
 
     def set_play_beginning_of_aya(self, e):
-        """Handle play beginning of aya button click"""
+        """Handle play beginning of aya button click."""
         self.play_begining_of_aya_is_true = True
         print(f"[DEBUG] Play beginning of aya flag set to: {self.play_begining_of_aya_is_true}")
         
     def create_audio_player(self, src, should_play_on_load=False, playback_rate=None):
-        """Create an audio player with the specified source and playback rate"""
+        """Create an audio player with the specified source and playback rate."""
         def on_state_changed(e):
-            """Handle audio state changes"""
+            """Handle audio state changes."""
             print(f"Audio state changed: {e.data}")
             if e.data == "completed":
                 # Move to next item after audio completes
@@ -70,7 +69,7 @@ class QuranApp:
                     self.update_content()
                 
         def on_loaded(e):
-            """Handle audio loaded event"""
+            """Handle audio loaded event."""
             print("Audio loaded")
             self.aya_duration = self.audio_player.get_duration()
             if should_play_on_load:
@@ -91,13 +90,13 @@ class QuranApp:
         )
         
     def next_item_and_play(self):
-        """Play current item then move to next when complete"""
+        """Play current item then move to next when complete."""
         print("Playing current item")
         if self.audio_player:
             self.audio_player.play()
             
     def play_current(self):
-        """Play the current aya"""
+        """Play the current aya."""
         print("Playing current aya")
         if self.audio_player:
             # Reset volume to full before playing
@@ -106,63 +105,33 @@ class QuranApp:
             self.audio_player.play()
         
     def init_db(self):
-        """Initialize the database"""
-        conn = None
-        try:
-            conn = sqlite3.connect('aya.db')
-            init_db(conn)
-            # Load initial speed
-            self.speed = get_speed(conn)
-        finally:
-            if conn:
-                conn.close()
+        """Initialize the database."""
+        init_db()
+        # Load initial speed
+        self.speed = get_speed()
 
     def update_current_aya(self, aya_id):
-        """Update the current aya in the database"""
-        conn = None
-        try:
-            conn = sqlite3.connect('aya.db')
-            update_current_aya(conn, aya_id)
-        finally:
-            if conn:
-                conn.close()
+        """Update the current aya in the database."""
+        update_current_aya(aya_id)
 
     def get_current_aya(self):
-        """Get the current aya from the database"""
-        conn = None
-        try:
-            conn = sqlite3.connect('aya.db')
-            return get_current_aya(conn)
-        finally:
-            if conn:
-                conn.close()
+        """Get the current aya from the database."""
+        return get_current_aya()
 
     def load_aya_data(self):
-        """Load aya data from SQLite database"""
-        conn = None
-        try:
-            conn = sqlite3.connect('aya.db')
-            self.aya_data = load_aya_data(conn)
-            return self.aya_data
-        finally:
-            if conn:
-                conn.close()
+        """Load aya data from SQLite database."""
+        self.aya_data = load_aya_data()
+        return self.aya_data
 
     def update_speed(self, speed):
-        """Update the playback speed"""
-        conn = None
-        try:
-            conn = sqlite3.connect('aya.db')
-            update_speed(conn, speed)
-            self.speed = speed
-            if self.audio_player:
-                self.audio_player.playback_rate = speed
-        finally:
-            if conn:
-                conn.close()
+        """Update the playback speed."""
+        update_speed(speed)
+        self.speed = speed
+        if self.audio_player:
+            self.audio_player.playback_rate = speed
 
     def build_sura_dropdown(self):
-        """Create dropdown for surah selection"""
+        """Create dropdown for surah selection."""
         return ft.Dropdown(
             width=200,
             label="Select Surah",
@@ -174,7 +143,7 @@ class QuranApp:
         )
 
     def build_aya_dropdown(self, sura_name):
-        """Create dropdown for ayah selection"""
+        """Create dropdown for ayah selection."""
         max_aya = self.sura_map[sura_name]['last_aya']
         return ft.Dropdown(
             width=100,
@@ -187,12 +156,12 @@ class QuranApp:
         )
 
     def find_aya_index(self, sura_name, aya_number):
-        """Find the index of a specific ayah in a surah"""
+        """Find the index of a specific ayah in a surah."""
         for i, item in enumerate(self.aya_data):
             if item['sura_name'] == sura_name and item['aya'] == aya_number:
                 return i
         return None
 
     def page(self, page: ft.Page):
-        """Create and configure the main application page"""
+        """Create and configure the main application page."""
         create_page(self, page)
