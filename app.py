@@ -29,7 +29,8 @@ class QuranApp:
                     'first_index': self.aya_data.index(item),
                     'last_aya': max(x['aya'] for x in self.aya_data if x['sura_name'] == item['sura_name'])
                 }
-        #self.audio_player=setup_audio_player()
+        #should be removed to app level
+        self.audio_player = self.setup_audio_player(self.aya_data[self.current_index]['audio'])
         
         
     def audio_position_changed(self, e):

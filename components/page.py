@@ -56,7 +56,8 @@ def create_page(app, page: ft.Page):
         aya_dropdown = app.build_aya_dropdown(app.aya_data[app.current_index]['sura_name'])
 
         #should be removed to app level
-        app.audio_player = app.setup_audio_player(app.aya_data[app.current_index]['audio'])
+        #app.audio_player = app.setup_audio_player(app.aya_data[app.current_index]['audio'])
+        
         page.overlay.append(app.audio_player)
 
         img_display = ft.Image(
@@ -71,16 +72,17 @@ def create_page(app, page: ft.Page):
             print(f"\n=== Updating content for index {app.current_index} ===")
             
             # Create new audio player with current speed
-            if app.audio_player:
-                new_player = app.create_audio_player(
-                    app.aya_data[app.current_index]['audio']
-                )
+            #if app.audio_player:
+            #    new_player = app.create_audio_player(
+            #        app.aya_data[app.current_index]['audio']
+            #    )
                 # Remove old player and add new one
-                page.overlay.remove(app.audio_player)
-                page.overlay.append(new_player)
-                app.audio_player = new_player
-                # Update speed display
-                speed_text.value = f"Speed: {app.speed}x"
+            #    page.overlay.remove(app.audio_player)
+            #    page.overlay.append(new_player)
+            #    app.audio_player = new_player
+            # Update speed display
+               
+            speed_text.value = f"Speed: {app.speed}x"
             
             # Update image and text
             img_display.src = app.aya_data[app.current_index]['image']
@@ -97,6 +99,8 @@ def create_page(app, page: ft.Page):
             
             # Update the page
             page.update()
+            app.audio_player.src=app.aya_data[app.current_index]['audio']
+            app.audio_player.update()
             print("Content update complete")
 
         def on_sura_change(e):
