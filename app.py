@@ -1,3 +1,4 @@
+#app.py
 import flet as ft
 import sqlite3
 from components.page import create_page

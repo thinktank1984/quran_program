@@ -1,3 +1,4 @@
+#components\page.py
 import flet as ft
 import traceback
 from pynput import keyboard
