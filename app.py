@@ -15,6 +15,9 @@ class QuranApp:
         self.play_begining_of_aya_is_true = False
         self.audio_volume = 1.0
         
+        #self.audio_player=setup_audio_player()
+        
+        
     def audio_position_changed(self, e):
         """Handle audio position changes."""
         handle_audio_position_changed(
@@ -29,7 +32,7 @@ class QuranApp:
         self.play_begining_of_aya_is_true = True
         print(f"[DEBUG] Play beginning of aya flag set to: {self.play_begining_of_aya_is_true}")
         
-    def create_audio_player(self, src, should_play_on_load=False, playback_rate=None):
+    def setup_audio_player(self, src, should_play_on_load=False, playback_rate=None):
         """Create an audio player with the specified source and playback rate."""
         def on_state_changed(e):
             """Handle audio state changes."""

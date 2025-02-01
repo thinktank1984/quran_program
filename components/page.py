@@ -68,6 +68,7 @@ def create_page(app, page: ft.Page):
         sura_dropdown = app.build_sura_dropdown()
         aya_dropdown = app.build_aya_dropdown(app.aya_data[app.current_index]['sura_name'])
 
+        #should be removed to app level
         app.audio_player = app.create_audio_player(app.aya_data[app.current_index]['audio'])
         page.overlay.append(app.audio_player)
 
