@@ -70,18 +70,6 @@ def create_page(app, page: ft.Page):
         def update_content():
             """Update the UI content"""
             print(f"\n=== Updating content for index {app.current_index} ===")
-            
-            # Create new audio player with current speed
-            #if app.audio_player:
-            #    new_player = app.create_audio_player(
-            #        app.aya_data[app.current_index]['audio']
-            #    )
-                # Remove old player and add new one
-            #    page.overlay.remove(app.audio_player)
-            #    page.overlay.append(new_player)
-            #    app.audio_player = new_player
-            # Update speed display
-               
             speed_text.value = f"Speed: {app.speed}x"
             
             # Update image and text

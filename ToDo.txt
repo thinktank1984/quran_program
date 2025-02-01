@@ -1,7 +1,14 @@
 fix sound q_files quality
 regenrate sound files using audacity
+-------------------------------
+refactor
+def update_content():
+    move logic to app
+    move UI to page
 
 
+
+-------------------------------
 play_begining_of_aya should play 30%
 now play does not reset begining flag
 

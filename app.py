@@ -2,7 +2,7 @@
 import flet as ft
 from db_functions import init_db, get_current_aya, update_current_aya, load_aya_data, get_speed, update_speed
 from components.page import create_page
-from components.audio_player import create_audio_player, handle_audio_position_changed, play_current, next_item_and_play
+from components.audio_player import create_audio_player, handle_audio_position_changed,  next_item_and_play
 
 class QuranApp:
     def __init__(self):
@@ -62,8 +62,8 @@ class QuranApp:
             """Handle audio loaded event."""
             print("Audio loaded")
             self.aya_duration = self.audio_player.get_duration()
-            if should_play_on_load:
-                play_current(self.audio_player)
+            
+            
                 
         # Use stored speed if no playback_rate provided
         if playback_rate is None:
@@ -84,9 +84,6 @@ class QuranApp:
         """Play current item then move to next when complete."""
         next_item_and_play(self.audio_player)
             
-    def play_current(self):
-        """Play the current aya."""
-        play_current(self.audio_player, self.audio_volume)
 
     def init_db(self):
         """Initialize the database."""
