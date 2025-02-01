@@ -2,7 +2,7 @@
 import flet as ft
 from db_functions import init_db, get_current_aya, update_current_aya, load_aya_data, get_speed, update_speed
 from components.page import create_page
-from components.audio_player import create_audio_player, handle_audio_position_changed,  play_current
+from components.audio_player import create_audio_player
 
 class QuranApp:
     def __init__(self):
@@ -35,8 +35,8 @@ class QuranApp:
         
     def audio_position_changed(self, e):
         """Handle audio position changes."""
-        handle_audio_position_changed(
-            self.audio_player,
+        self.audio_player.handle_audio_position_changed(
+            #self.audio_player,
             self.aya_duration,
             self.play_begining_of_aya_is_true,
             self.audio_volume
@@ -80,9 +80,7 @@ class QuranApp:
         )
         return self.audio_player
         
-    # def next_item_and_play(self):
-    #     """Play current item then move to next when complete."""
-    #     play_current(self.audio_player)
+
             
 
     def init_db(self):
