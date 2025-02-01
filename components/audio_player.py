@@ -61,14 +61,9 @@ def handle_audio_position_changed(player, aya_duration, play_begining_of_aya_is_
                 print(f"[DEBUG] Volume decreased to: {audio_volume:.3f}")
 
 def play_current(player, audio_volume=1.0):
-    """Play the current audio with full volume."""
+    """Play the current audio with passed volume."""
     print("Playing current audio")
     if player:
         player.volume = audio_volume
         player.play()
 
-def next_item_and_play(player):
-    """Play the current audio item."""
-    print("Playing current item")
-    if player:
-        player.play()
