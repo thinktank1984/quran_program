@@ -13,7 +13,7 @@ def create_audio_player(
     playback_rate=1.0
 ):
     """Create and configure an audio player."""
-    return fta.Audio(
+    audio_player_temp = fta.Audio(
         src=initial_src,
         autoplay=False,
         volume=volume,
@@ -25,6 +25,9 @@ def create_audio_player(
         on_seek_complete=on_seek_complete,
         playback_rate=playback_rate,
     )
+    audio_player_temp.handle_audio_position_changed=handle_audio_position_changed
+    audio_player_temp.play_current=play_current
+    return audio_player_temp
 
 def handle_audio_position_changed(player, aya_duration, play_begining_of_aya_is_true, audio_volume):
     """Handle audio position changes and volume fading."""
