@@ -32,20 +32,7 @@ def create_page(app, page: ft.Page):
     page.on_keyboard_event = on_keyboard_event
 
     try:
-        # Initialize database and load data
-        app.init_db()
-        app.aya_data = app.load_aya_data()
-        if not app.aya_data:
-            raise ValueError("No aya data found in database")
-        app.current_index = app.get_current_aya() - 1
-
-        # Get unique sura names and their first ayah indices
-        for item in app.aya_data:
-            if item['sura_name'] not in app.sura_map:
-                app.sura_map[item['sura_name']] = {
-                    'first_index': app.aya_data.index(item),
-                    'last_aya': max(x['aya'] for x in app.aya_data if x['sura_name'] == item['sura_name'])
-                }
+        
 
         status_text = ft.Text(
             f"Surah {app.aya_data[app.current_index]['sura_name']} - Ayah {app.aya_data[app.current_index]['aya']}", 
