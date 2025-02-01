@@ -149,7 +149,7 @@ def create_page(app, page: ft.Page):
                             ft.IconButton(
                                 icon=ft.icons.PLAY_ARROW,
                                 icon_size=30,
-                                on_click=lambda e: app.next_item_and_play(),
+                                on_click=lambda e: app.audio_player.play_current(),
                             ),
                             ft.IconButton(
                                 icon=ft.icons.PLAY_CIRCLE_OUTLINE,
