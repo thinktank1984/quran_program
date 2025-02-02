@@ -151,12 +151,13 @@ def create_page(app, page: ft.Page):
                                 icon_size=30,
                                 on_click=lambda e: app.audio_player.play_current(),
                             ),
-                            ft.IconButton(
-                                icon=ft.icons.PLAY_CIRCLE_OUTLINE,
-                                icon_size=30,
-                                tooltip="Play beginning of aya",
-                                on_click=lambda e: app.set_play_beginning_of_aya(e),
-                            ),
+                            # ft.IconButton(
+                            #     icon=ft.icons.PLAY_CIRCLE_OUTLINE,
+                            #     icon_size=30,
+                            #     tooltip="Play beginning of aya",
+                            #     on_click=lambda e: app.toggle_play_beginning_of_aya(e),
+                            # ),
+                            ft.Switch(label="Play beginning of aya", value=False,on_change=lambda e: app.toggle_play_beginning_of_aya(e))
                         ],
                         alignment=ft.MainAxisAlignment.CENTER,
                     ),

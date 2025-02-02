@@ -9,13 +9,20 @@ def update_content():
 
 
 -------------------------------
-play_begining_of_aya should play 30%
-now play does not reset begining flag
 
+Add state class
+change db_function in db_class
 
+Play continious
+ASR support/audio fingerprinting
+Voice morphing
 play_end_of_aya should play last 30%
 play_end_of_aya should start and rampup 
-Sura should be sorted by sura number
+Add next aya button
+
 
 Done
 play_begining_of_aya should fade after 30%
+play_begining_of_aya should play 30%
+play_begining_of_aya is a toggle
+Sura should be sorted by sura number
