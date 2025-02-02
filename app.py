@@ -42,9 +42,9 @@ class QuranApp:
             self.audio_volume
         )
 
-    def set_play_beginning_of_aya(self, e):
+    def toggle_play_beginning_of_aya(self, e):
         """Handle play beginning of aya button click."""
-        self.play_begining_of_aya_is_true = True
+        self.play_begining_of_aya_is_true = not self.play_begining_of_aya_is_true
         print(f"[DEBUG] Play beginning of aya flag set to: {self.play_begining_of_aya_is_true}")
         
     def setup_audio_player(self, src, should_play_on_load=False, playback_rate=None):
