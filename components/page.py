@@ -55,15 +55,12 @@ def create_page(app, page: ft.Page):
         sura_dropdown = app.build_sura_dropdown()
         aya_dropdown = app.build_aya_dropdown(app.aya_data[app.current_index]['sura_name'])
 
-        #should be removed to app level
-        #app.audio_player = app.setup_audio_player(app.aya_data[app.current_index]['audio'])
-        
         page.overlay.append(app.audio_player)
 
         img_display = ft.Image(
             src=app.aya_data[app.current_index]['image'],
-            width=400,
-            height=400,
+            width=None,
+            height=300,
             fit=ft.ImageFit.CONTAIN,
         )
 
@@ -71,24 +68,33 @@ def create_page(app, page: ft.Page):
             """Update the UI content"""
             print(f"\n=== Updating content for index {app.current_index} ===")
             speed_text.value = f"Speed: {app.speed}x"
-            
+
             # Update image and text
             img_display.src = app.aya_data[app.current_index]['image']
             suffix = app.aya_data[app.current_index]['aya_suffix']
             suffix_display = f" - {suffix}" if suffix else ""
             status_text.value = f"Surah {app.aya_data[app.current_index]['sura_name']} - Ayah {app.aya_data[app.current_index]['aya']}{suffix_display}"
-            
+
             # Update dropdown selections
             sura_dropdown.value = app.aya_data[app.current_index]['sura_name']
             aya_dropdown.value = str(app.aya_data[app.current_index]['aya'])
-            
+
             # Update database
             app.update_current_aya(app.aya_data[app.current_index]['id'])
-            
-            # Update the page
-            page.update()
+
+            # Dispose of the old audio player if it exists
+            if hasattr(app, 'audio_player') and app.audio_player:
+                page.overlay.remove(app.audio_player)
+                app.audio_player._dispose()
+                #page.update()
+
+            # Create and configure the new audio player
+            app.audio_player = app.setup_audio_player(app.aya_data[app.current_index]['audio'])
             app.audio_player.playback_rate = app.speed
-            app.audio_player.src=app.aya_data[app.current_index]['audio']
+            page.overlay.append(app.audio_player)
+
+            # Update the page and audio player
+            page.update()
             app.audio_player.update()
             print("Content update complete")
 
@@ -130,59 +136,76 @@ def create_page(app, page: ft.Page):
         sura_dropdown.on_change = on_sura_change
         aya_dropdown.on_change = on_aya_change
 
-        # Add elements to page
+       # Add elements to page using ResponsiveRow
         page.add(
-            ft.Column(
+            ft.ResponsiveRow(
                 [
-                    status_text,
-                    ft.Row(
-                        [sura_dropdown, aya_dropdown],
-                        alignment=ft.MainAxisAlignment.CENTER,
+                    ft.Column(
+                        [status_text],
+                        col={"xs": 12, "sm": 12, "md": 12, "lg": 12, "xl": 12},
+                        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     ),
-                    img_display,
-                    ft.Row(
-                        [
-                            ft.IconButton(
-                                icon=ft.icons.SKIP_PREVIOUS,
-                                icon_size=30,
-                                on_click=prev_item,
-                            ),
-                            ft.IconButton(
-                                icon=ft.icons.PLAY_ARROW,
-                                icon_size=30,
-                                on_click=lambda e: app.audio_player.play_current(speed=app.speed),
-                            ),
-                            # ft.IconButton(
-                            #     icon=ft.icons.PLAY_CIRCLE_OUTLINE,
-                            #     icon_size=30,
-                            #     tooltip="Play beginning of aya",
-                            #     on_click=lambda e: app.toggle_play_beginning_of_aya(e),
-                            # ),
-                            ft.Switch(label="Play beginning of aya", value=False,on_change=lambda e: app.toggle_play_beginning_of_aya(e))
-                        ],
-                        alignment=ft.MainAxisAlignment.CENTER,
+                    ft.Column(
+                        [ft.Row(
+                            [sura_dropdown, aya_dropdown],
+                            alignment=ft.MainAxisAlignment.CENTER,
+                        )],
+                        col={"xs": 12, "sm": 12, "md": 6, "lg": 6, "xl": 6},
+                        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     ),
-                    ft.Row(
+                    ft.Column(
+                        [img_display],
+                        col={"xs": 12, "sm": 12, "md": 12, "lg": 12, "xl": 12},
+                        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                    ),
+                    ft.Column(
                         [
-                            ft.IconButton(
-                                icon=ft.icons.REMOVE,
-                                icon_size=20,
-                                on_click=lambda e: update_speed(-0.1),
-                                tooltip="Decrease speed by 10%",
-                            ),
-                            speed_text,
-                            ft.IconButton(
-                                icon=ft.icons.ADD,
-                                icon_size=20,
-                                on_click=lambda e: update_speed(0.1),
-                                tooltip="Increase speed by 10%",
+                            ft.Row(
+                                [
+                                    ft.IconButton(
+                                        icon=ft.icons.SKIP_PREVIOUS,
+                                        icon_size=24,
+                                        on_click=prev_item,
+                                    ),
+                                    ft.IconButton(
+                                        icon=ft.icons.PLAY_ARROW,
+                                        icon_size=24,
+                                        on_click=lambda e: app.audio_player.play_current(speed=app.speed),
+                                    ),
+                                    ft.Switch(label="Play beginning of aya", value=False, on_change=lambda e: app.toggle_play_beginning_of_aya(e))
+                                ],
+                                alignment=ft.MainAxisAlignment.CENTER,
                             ),
                         ],
-                        alignment=ft.MainAxisAlignment.CENTER,
+                        col={"xs": 12, "sm": 12, "md": 6, "lg": 6, "xl": 6},
+                        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                    ),
+                    ft.Column(
+                        [
+                            ft.Row(
+                                [
+                                    ft.IconButton(
+                                        icon=ft.icons.REMOVE,
+                                        icon_size=20,
+                                        on_click=lambda e: update_speed(-0.1),
+                                        tooltip="Decrease speed",
+                                    ),
+                                    speed_text,
+                                    ft.IconButton(
+                                        icon=ft.icons.ADD,
+                                        icon_size=20,
+                                        on_click=lambda e: update_speed(0.1),
+                                        tooltip="Increase speed",
+                                    ),
+                                ],
+                                alignment=ft.MainAxisAlignment.CENTER,
+                            ),
+                        ],
+                        col={"xs": 12, "sm": 12, "md": 6, "lg": 6, "xl": 6},
+                        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     ),
                 ],
-                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                spacing=20,
+                spacing=10,
             )
         )
 

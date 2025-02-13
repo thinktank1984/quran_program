@@ -48,6 +48,10 @@ class QuranApp:
         print(f"[DEBUG] Play beginning of aya flag set to: {self.play_begining_of_aya_is_true}")
         if self.audio_player:
             self.audio_player.playback_rate = self.speed
+        if self.play_begining_of_aya_is_true:
+            self.current_index = (self.current_index + 1) % len(self.aya_data)
+            if hasattr(self, 'update_content'):
+                self.update_content()
 
     def setup_audio_player(self, src, should_play_on_load=False, playback_rate=None):
         """Create an audio player with the specified source and playback rate."""
@@ -59,7 +63,7 @@ class QuranApp:
                 self.current_index = (self.current_index + 1) % len(self.aya_data)
                 if hasattr(self, 'update_content'):
                     self.update_content()
-                
+
         def on_loaded(e):
             """Handle audio loaded event."""
             print("Audio loaded")

@@ -90,6 +90,7 @@ def create_audio_player(
         on_seek_complete=on_seek_complete,
         volume=volume,
         balance=balance,
+        
         playback_rate=playback_rate
     )
     
