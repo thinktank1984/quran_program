@@ -14,9 +14,9 @@ class QuranApp:
         self.aya_duration = None
         self.play_begining_of_aya_is_true = False
         self.audio_volume = 1.0
-        #init db
+
         # Initialize database and load data
-        init_db()
+        self.init_db()  # Correctly call the instance method
         self.aya_data = load_aya_data()
         if not self.aya_data:
             raise ValueError("No aya data found in database")

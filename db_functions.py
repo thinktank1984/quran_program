@@ -111,54 +111,63 @@ def load_aya_data() -> List[Dict]:
             print(f"Error in load_aya_data: {str(e)}")
             print(traceback.format_exc())
             raise
+        finally:
+            if conn:
+                conn.close()
 
 def get_current_aya() -> int:
     """Get the current aya from the database."""
     print("\n=== Getting current aya ===")
-    with get_db_connection() as conn:
-        try:
+    try:
+        with get_db_connection() as conn:
             cursor = conn.cursor()
-            
+
             cursor.execute('SELECT current_aya FROM current_aya LIMIT 1')
             result = cursor.fetchone()
             print(f"Current aya query result: {result}")
-            
+
             if result is None:
                 # If no row exists, insert default values
                 cursor.execute('INSERT INTO current_aya (current_aya, speed) VALUES (1, 1.0)')
                 conn.commit()
                 return 1
-                
+
             return result[0]
-        except Exception as e:
-            print(f"Error in get_current_aya: {str(e)}")
-            print(traceback.format_exc())
-            conn.rollback()
-            raise
+    except Exception as e:
+        print(f"Error in get_current_aya: {str(e)}")
+        print(traceback.format_exc())
+        # Return a default value if an error occurs
+        return 1
+    finally:
+        if conn:
+            conn.close()
 
 def get_speed() -> float:
     """Get the current speed from the database."""
     print("\n=== Getting current speed ===")
-    with get_db_connection() as conn:
-        try:
+    try:
+        with get_db_connection() as conn:
             cursor = conn.cursor()
-            
+
             cursor.execute('SELECT speed FROM current_aya LIMIT 1')
             result = cursor.fetchone()
             print(f"Current speed query result: {result}")
-            
+
             if result is None:
                 # If no row exists, insert default values
                 cursor.execute('INSERT INTO current_aya (current_aya, speed) VALUES (1, 1.0)')
                 conn.commit()
                 return 1.0
-                
+
             return float(result[0])
-        except Exception as e:
-            print(f"Error in get_speed: {str(e)}")
-            print(traceback.format_exc())
-            conn.rollback()
-            raise
+    except Exception as e:
+        print(f"Error in get_speed: {str(e)}")
+        print(traceback.format_exc())
+        # Return a default value if an error occurs
+        return 1.0
+    finally:
+        if conn:
+            conn.close()
 
 def update_speed(speed: float) -> None:
     """Update the speed in the database."""
