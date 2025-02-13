@@ -87,8 +87,7 @@ def create_page(app, page: ft.Page):
             
             # Update the page
             page.update()
-            if not app.audio_player.is_playing:
-                app.audio_player.playback_rate = app.speed
+            app.audio_player.playback_rate = app.speed
             app.audio_player.src=app.aya_data[app.current_index]['audio']
             app.audio_player.update()
             print("Content update complete")
