@@ -10,14 +10,18 @@ def update_content():
 
 -------------------------------
 
-Add state class
+
 change db_function in db_class
 
 Play continious
+move to next aya
+
 ASR support/audio fingerprinting
 Voice morphing
+
 play_end_of_aya should play last 30%
 play_end_of_aya should start and rampup 
+
 Add next aya button
 
 
