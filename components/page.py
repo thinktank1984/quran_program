@@ -87,7 +87,8 @@ def create_page(app, page: ft.Page):
             
             # Update the page
             page.update()
-            app.audio_player.playback_rate = app.speed
+            if not app.audio_player.is_playing:
+                app.audio_player.playback_rate = app.speed
             app.audio_player.src=app.aya_data[app.current_index]['audio']
             app.audio_player.update()
             print("Content update complete")
@@ -150,7 +151,7 @@ def create_page(app, page: ft.Page):
                             ft.IconButton(
                                 icon=ft.icons.PLAY_ARROW,
                                 icon_size=30,
-                                on_click=lambda e: app.audio_player.play_current(),
+                                on_click=lambda e: app.audio_player.play_current(speed=app.speed),
                             ),
                             # ft.IconButton(
                             #     icon=ft.icons.PLAY_CIRCLE_OUTLINE,

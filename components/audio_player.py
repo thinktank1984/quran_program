@@ -59,13 +59,16 @@ class MainAudioPlayer(fta.Audio):
                     self.update()
                     print(f"[DEBUG] Volume decreased to: {audio_volume:.3f}")
 
-    def play_current(self, audio_volume=1.0):
+    def play_current(self, audio_volume=1.0, speed=1):
         """Play the current audio with passed volume."""
         print("Playing current audio")
         if self:
             self.volume = audio_volume
+            print(self.playback_rate)
+            self.playback_rate = speed
+            self.update()
             self.play()
-            
+
 def create_audio_player(
     initial_src,
     on_loaded,
