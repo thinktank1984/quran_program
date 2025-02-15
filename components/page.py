@@ -2,6 +2,7 @@
 import flet as ft
 import traceback
 from pynput import keyboard
+import sys
 
 def create_page(app, page: ft.Page):
     """Create and configure the main application page"""
@@ -204,6 +205,20 @@ def create_page(app, page: ft.Page):
                         col={"xs": 12, "sm": 12, "md": 6, "lg": 6, "xl": 6},
                         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     ),
+                    ft.Column(
+                        [
+                            ft.Row(
+                                [
+                                    ft.TextButton("Show Log", on_click=lambda e: app.show_log(page)),
+                                    ft.TextButton("Exit with Log", on_click=lambda e: sys.exit(100)),
+                                ],
+                                alignment=ft.MainAxisAlignment.CENTER,
+                            ),
+                        ],
+                        col={"xs": 12, "sm": 12, "md": 6, "lg": 6, "xl": 6},
+                        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                    ),
+
                 ],
                 spacing=10,
             )

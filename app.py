@@ -1,5 +1,7 @@
 # File: app.py
 import flet as ft
+import os
+import sys
 from db_functions import init_db, get_current_aya, update_current_aya, load_aya_data, get_speed, update_speed
 from components.page import create_page
 from components.audio_player import create_audio_player
@@ -102,6 +104,35 @@ class QuranApp:
     def get_current_aya(self):
         """Get the current aya from the database."""
         return get_current_aya()
+
+    def read_log(self):
+        """Reads the Flet app console log."""
+        log_file_path = os.getenv("FLET_APP_CONSOLE")
+        if log_file_path:
+            try:
+                with open(log_file_path, "r") as f:
+                    log = f.read()
+                return log
+            except Exception as e:
+                return f"Error reading log file: {e}"
+        else:
+            return "FLET_APP_CONSOLE environment variable not set."
+    
+    def show_log(self, page: ft.Page):
+        """Displays the Flet app console log in an AlertDialog."""
+        log_content = self.read_log()
+        dlg = ft.AlertDialog(
+            title=ft.Text("Console Log"),
+            content=ft.Text(log_content),
+            actions=[ft.TextButton("Close", on_click=lambda e: self.close_dlg(dlg, page))],
+        )
+        page.dialog = dlg
+        dlg.open = True
+        page.update()
+
+    def close_dlg(self, dlg: ft.AlertDialog, page: ft.Page):
+        dlg.open = False
+        page.update()
 
     def load_aya_data(self):
         """Load aya data from SQLite database."""

@@ -14,7 +14,7 @@ dependencies = [
 [tool.flet]
 org = "com.example"
 product = "QuranApp"
-company = "QuranApp
+company = "QuranApp"
 copyright = "Copyright (C) 2025 by QuranApp"
 
 [tool.flet.app]
