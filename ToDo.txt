@@ -11,10 +11,10 @@ def update_content():
 -------------------------------
 
 
-change db_function in db_class
+fix play begining of aya does not move to next aya
 
 Play continious
-move to next aya
+Add next aya button
 
 ASR support/audio fingerprinting
 Voice morphing
@@ -22,7 +22,7 @@ Voice morphing
 play_end_of_aya should play last 30%
 play_end_of_aya should start and rampup 
 
-Add next aya button
+
 
 
 Done
