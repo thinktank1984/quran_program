@@ -10,6 +10,7 @@ def update_content():
 
 -------------------------------
 
+Android packaging
 
 fix play begining of aya does not move to next aya
 

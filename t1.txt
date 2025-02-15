@@ -1,0 +1,27 @@
+
+    Directory: D:\code\quran_program
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d----          16/02/2025 10:23 am                __pycache__
+d----          30/01/2025  4:54 pm                .venv
+d----          30/01/2025  4:54 pm                archive
+d----          16/02/2025  9:17 am                assets
+d----          16/02/2025  9:14 am                build
+d----          16/02/2025 10:23 am                components
+d----          30/01/2025  4:55 pm                q_files
+d----          30/01/2025  4:55 pm                splits
+-a---          28/01/2025  7:42 pm            818 .gitignore
+-a---          16/02/2025 10:23 am           5806 app.py
+-a---          16/02/2025 10:24 am         557056 aya.db
+-a---          16/02/2025 10:23 am           7817 db_functions.py
+-a---           9/01/2025  5:07 pm             22 ggg.ps1
+-a---          31/01/2025  6:32 pm           5616 hid_inputs.py
+-a---          16/02/2025 10:17 am            198 main.py
+-a---          16/02/2025 10:23 am           1370 README.md
+-a---          16/02/2025 10:23 am             26 requirements.txt
+-a---          16/02/2025 10:23 am          34371 screen_shot.png
+-a---          15/02/2025  1:24 pm              0 state.py
+-a---          16/02/2025 10:35 am              0 t1.txt
+-a---          16/02/2025 10:30 am            629 ToDo.txt
+
