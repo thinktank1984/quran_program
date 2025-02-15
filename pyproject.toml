@@ -5,7 +5,7 @@ description = "Quran App"
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [
-    { name = "Your Name", email = "your@email.com" }
+    { name = "A S", email = "your@email.com" }
 ]
 dependencies = [
   "flet"
@@ -14,8 +14,8 @@ dependencies = [
 [tool.flet]
 org = "com.example"
 product = "QuranApp"
-company = "Example Company"
-copyright = "Copyright (C) 2025 by Example Company"
+company = "QuranApp
+copyright = "Copyright (C) 2025 by QuranApp"
 
 [tool.flet.app]
 path = "."
