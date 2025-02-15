@@ -27,6 +27,7 @@ class MainAudioPlayer(fta.Audio):
             playback_rate=playback_rate,
         )
         self.last_volume_update = 0
+        self.reached_end = False
 
     def handle_audio_position_changed(self, aya_duration, play_begining_of_aya_is_true, audio_volume):
         """Handle audio position changes and volume fading."""
@@ -39,6 +40,7 @@ class MainAudioPlayer(fta.Audio):
 
             if current_position > sixty_percent:
                 self.pause()
+                self.reached_end = True
                 play_begining_of_aya_is_true = False
                 audio_volume = 1.0
                 self.volume = audio_volume
@@ -58,6 +60,10 @@ class MainAudioPlayer(fta.Audio):
                     self.volume = audio_volume
                     self.update()
                     print(f"[DEBUG] Volume decreased to: {audio_volume:.3f}")
+        elif aya_duration:
+            current_position = float(self.get_current_position())
+            if current_position >= aya_duration:
+                self.reached_end = True
 
     def play_current(self, audio_volume=1.0, speed=1):
         """Play the current audio with passed volume."""
