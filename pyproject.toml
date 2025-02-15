@@ -1,0 +1,24 @@
+[project]
+name = "quran_app"
+version = "0.1.0"
+description = "Quran App"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+    { name = "Your Name", email = "your@email.com" }
+]
+dependencies = [
+  "flet"
+]
+
+[tool.flet]
+org = "com.example"
+product = "QuranApp"
+company = "Example Company"
+copyright = "Copyright (C) 2025 by Example Company"
+
+[tool.flet.app]
+path = "."
+
+[tool.flet.flutter.dependencies]
+flet_audio = "*"

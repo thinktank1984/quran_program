@@ -1,3 +1,31 @@
+Play and move to next: ✅
+Move to Previous: ✅
+Toggle play begining of aya: ✅
+Increase speed ✅
+Decrease speed  ✅
+Change speed is presistent: ✅
+play begining of aya move to next aya ❌
+Android packaging: ❌
+Play continious: ❌
+move to next aya button ❌
+play_end_of_aya should play last 30% ❌
+play_end_of_aya should start and rampup ❌
+❌
+❌
+❌
+
+
+
+
+
+
+
+ASR support/audio fingerprinting
+Voice morphing
+
+
+
+--------------------
 fix sound q_files quality
 regenrate sound files using audacity
 -------------------------------
@@ -5,25 +33,6 @@ refactor
 def update_content():
     move logic to app
     move UI to page
-
-
-
--------------------------------
-
-Android packaging
-
-fix play begining of aya does not move to next aya
-
-Play continious
-Add next aya button
-
-ASR support/audio fingerprinting
-Voice morphing
-
-play_end_of_aya should play last 30%
-play_end_of_aya should start and rampup 
-
-
 
 
 Done
